@@ -35,18 +35,22 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Add a new room
 CREATE OR REPLACE FUNCTION add_room(
+    p_room_id INT,
     p_room_number VARCHAR,
     p_capacity INT
 ) RETURNS TEXT AS $$
 BEGIN
-    INSERT INTO rooms (room_number, capacity, status)
-    VALUES (p_room_number, p_capacity, 'available');
-
+    INSERT INTO rooms (room_id, room_number, capacity, status)
+    VALUES (p_room_id, p_room_number, p_capacity, 'available');
     RETURN 'Room added successfully';
+EXCEPTION
+    WHEN unique_violation THEN
+        RETURN 'Error: room_id or room_number already exists';
 END;
 $$ LANGUAGE plpgsql;
+
+
 
 -- Update room status
 CREATE OR REPLACE FUNCTION update_room_status(
