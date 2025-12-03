@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/create table.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/queries.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/bookings.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/create table.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/reports.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/rooms.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/tenants.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/testing.sql" dialect="PostgreSQL" />
   </component>
 </project>
