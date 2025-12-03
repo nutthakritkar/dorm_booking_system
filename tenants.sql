@@ -1,47 +1,32 @@
--- Get all rooms in the dorm
-CREATE OR REPLACE FUNCTION get_all_rooms()
-RETURNS TABLE(room_id INT, room_number VARCHAR, capacity INT, status VARCHAR) AS $$
+-- Get email of current user
+CREATE OR REPLACE FUNCTION login_user(p_email VARCHAR)
+RETURNS TABLE(tenant_id INT, name VARCHAR, email VARCHAR) AS $$
 BEGIN
     RETURN QUERY
-    SELECT room_id, room_number, capacity, status
-    FROM rooms
-    ORDER BY room_id;
+    SELECT t.tenant_id AS tenant_id,
+           t.name AS name,
+           t.email AS email
+    FROM tenants t
+    WHERE t.email = p_email;
 END; $$ LANGUAGE plpgsql;
 
--- Get the available rooms
-CREATE OR REPLACE FUNCTION get_available_rooms()
-RETURNS TABLE(room_id INT, room_number VARCHAR, capacity INT) AS $$
-BEGIN
-    RETURN QUERY
-    SELECT room_id, room_number, capacity
-    FROM rooms
-    WHERE status = 'available'
-    ORDER BY room_id;
-END; $$ LANGUAGE plpgsql;
-
--- Add new rooms
-CREATE OR REPLACE FUNCTION add_room(
-    p_room_number VARCHAR,
-    p_capacity INT
+CREATE OR REPLACE FUNCTION add_tenant(
+    p_name VARCHAR,
+    p_email VARCHAR
 ) RETURNS TEXT AS $$
 BEGIN
-    INSERT INTO rooms (room_number, capacity, status)
-    VALUES (p_room_number, p_capacity, 'available');
+    INSERT INTO tenants (name, email)
+    VALUES (p_name, p_email);
 
-    RETURN 'Room added successfully';
+    RETURN 'Tenant added successfully';
 END; $$ LANGUAGE plpgsql;
 
--- Update room status
-CREATE OR REPLACE FUNCTION update_room_status(
-    p_room_id INT,
-    p_status VARCHAR
-) RETURNS TEXT AS $$
+CREATE OR REPLACE FUNCTION check_email_exists(p_email VARCHAR)
+RETURNS BOOLEAN AS $$
+DECLARE v_exists BOOLEAN;
 BEGIN
-    UPDATE rooms SET status = p_status WHERE room_id = p_room_id;
+    SELECT EXISTS(SELECT 1 FROM tenants WHERE email = p_email)
+    INTO v_exists;
 
-    IF NOT FOUND THEN
-        RETURN 'Error: Room not found';
-    END IF;
-
-    RETURN 'Room status updated';
+    RETURN v_exists;
 END; $$ LANGUAGE plpgsql;
