@@ -1,4 +1,4 @@
-SELECT * FROM public.get_all_rooms();
+SELECT * FROM get_all_rooms();
 SELECT * FROM get_available_rooms();
 SELECT create_booking(1, 101, '2025-12-20', '2025-12-25');
 SELECT * FROM login_user('alice@example.com');
