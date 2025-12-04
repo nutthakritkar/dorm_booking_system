@@ -18,3 +18,4 @@ BEGIN
       AND EXTRACT(MONTH FROM b.start_date) = p_month
     ORDER BY r.room_number;
 END; $$ LANGUAGE plpgsql;
+
